@@ -9,6 +9,7 @@ INSERT INTO tipos_cliente (clt_name) VALUES
 	('Classic'),
 	('Gold'),
 	('Black');
+SELECT * FROM tipo_cuenta
 
 --TIPO CUENTA
 CREATE TABLE IF NOT EXISTS tipos_cuenta (
@@ -50,7 +51,7 @@ CREATE TABLE IF NOT EXISTS tarjeta (
 	FOREIGN KEY (card_brand) REFERENCES marca_tarjeta(cat_id),
 	FOREIGN KEY (card_customer) REFERENCES cliente (customer_id) 
 );
-
+select * from tarjeta
 
 --Agregar la entidad direcciones, que puede ser usada por los clientes,empleados y sucursales con los campos utilizados en el SPRINT 5
 CREATE TABLE IF NOT EXISTS direccion (
@@ -60,9 +61,19 @@ CREATE TABLE IF NOT EXISTS direccion (
 	address_city TEXT NOT NULL,
 	address_province TEXT NOT NULL,
 	address_country TEXT NOT NULL,
-	address_
+	address_customer INTEGER,
+	address_employee INTEGER,
+	address_branch INTEGER UNIQUE,
+	FOREIGN KEY (address_customer) REFERENCES cliente(customer_id),
+	FOREIGN KEY (address_employee) REFERENCES empleado(employee_id),
+	FOREIGN KEY (address_branch) REFERENCES sucursal(branch_id)
 );
+insert into direccion(address_id,address_street,address_number,address_city,address_province,address_country,address_customer,address_employee,address_branch) 
+VALUES
+(1,'a','a','a','a','a',1,NULL,NULL)
 
+SELECT * FROM direccion
+DROP TABLE direccion
 --Ampliar el alcance de la entidad cuenta para que identifique el tipo de la misma
 CREATE TABLE "temp" (
 	"account_id"	INTEGER NOT NULL,
@@ -100,8 +111,9 @@ UPDATE cuenta as a SET
 	account_type = (SELECT abs(random() % 3)+1 FROM cuenta b where a.account_id = b.account_id);
 
 
---Corregir el campo employee_hire_date de la tabla empleado con lafecha en formato YYYY-MM-DD
+--Corregir el campo employee_hire_date de la tabla empleado con lafecha en formato YYYY-MM-DD <---- DD-MM-YYYY
 UPDATE empleado as a SET
-	employee_hire_date = (select substr(employee_hire_date,7,4) || "-" || substr(employee_hire_date,4,2) || "-" || substr(employee_hire_date,1,2) from empleado b where a.employee_id = b.employee_id);
+	employee_hire_date = (select substr(employee_hire_date,7,4) || "-" || substr(employee_hire_date,4,2) || "-" || substr(employee_hire_date,1,2) from empleado as b where a.employee_id = b.employee_id);
 
+select substr(employee_hire_date,6,2) from empleado
 
