@@ -6,7 +6,7 @@
 -- SELECT date('now') - date(dob) from cliente
 
 create view vista as
-select customer_id, customer_DNI, customer_name, customer_surname, date('now') - date(dob) as customer_age, branch_number from cliente c inner join sucursal s on s.branch_id = c.branch_id
+select customer_id, customer_DNI, customer_name, customer_surname, date('now') - date(dob) as customer_age, branch_number from cliente c inner join sucursal s on s.branch_id = c.branch_id;
 
 select * from vista where customer_age > 40 order by customer_DNI asc;
 

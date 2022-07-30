@@ -3,7 +3,7 @@ SELECT count() as cantidad, branch_name
 FROM cliente as c
 INNER JOIN sucursal as s on c.branch_id = s.branch_id
 GROUP by c.branch_id 
-ORDER by cantidad DESC
+ORDER by cantidad DESC;
 
 
 --Obtener la cantidad de empleados por cliente por sucursal en un númeroreal
@@ -11,18 +11,18 @@ ORDER by cantidad DESC
 create view clientes_por_sucursal as 
 select  branch_id, count(customer_id) as total_clientes
 from cliente
-group by branch_id
+group by branch_id;
 
 create view empleados_por_sucursal as 
 select branch_id, count(employee_id) as total_empleados
 from empleado
-group by branch_id
+group by branch_id;
  
 
 select cxs.branch_id,  CAST(total_clientes as REAL) / total_empleados as empleados_por_cliente
 FROM clientes_por_sucursal cxs
 inner join empleados_por_sucursal exs on cxs.branch_id = exs.branch_id
-order by exs.branch_id
+order by exs.branch_id;
 
 -- Obtener el promedio de créditos otorgado por sucursal
 SELECT s.branch_id, avg(p.loan_total)
@@ -59,7 +59,7 @@ BEGIN
 	old.account_id, new.account_id, old.balance, new.balance, old.iban, new.iban, old.account_type, new.account_type, "UPDATE", datetime("now")
 	);
 END;
-UPDATE cuenta set balance = balance-10000 where account_id in (10,11,12,13,14)
+UPDATE cuenta set balance = balance-10000 where account_id in (10,11,12,13,14);
 
 --Mediante índices mejorar la performance la búsqueda de clientes por DNI
 CREATE INDEX IF NOT EXISTS index_dni
@@ -78,7 +78,7 @@ CREATE TABLE movimientos(
 	horario datetime,
 	
 	FOREIGN KEY (account_id) REFERENCES cuenta(account_id)
-)
+);
 END TRANSACTION;
 BEGIN TRANSACTION;
  UPDATE cuenta set balance = balance - 100000
@@ -89,4 +89,4 @@ BEGIN TRANSACTION;
 ROLLBACK;
 
 SELECT *
-FROM auditoria_cuenta
+FROM auditoria_cuenta;
