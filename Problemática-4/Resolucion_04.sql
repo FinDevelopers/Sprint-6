@@ -85,8 +85,11 @@ BEGIN TRANSACTION;
  WHERE account_id = 200;
  UPDATE cuenta set balance = balance + 100000
  WHERE account_id = 400;
+ INSERT INTO movimientos(
+	account_id, monto, tipo_operacion, horario
+ )
+ VALUES(200, -100000, "transferencia", datetime("now")), (400, 100000, "transferencia", datetime("now"))
  COMMIT;
-ROLLBACK;
 
 SELECT *
-FROM auditoria_cuenta;
+FROM movimientos;
